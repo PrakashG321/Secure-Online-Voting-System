@@ -1,0 +1,2576 @@
+app.post("/save-additional-info", async (req, res) => {
+  const { username, first_name, last_name, citizenship_no, phone_no, address } = req.body;
+
+  try {
+    // Insert additional information into the database
+    await db.query("INSERT INTO users (username, first_name, last_name, citizenship_no, phone_no, address) VALUES ($1, $2, $3, $4, $5 ,$6)", [username, first_name, last_name, citizenship_no, phone_no, address]);
+    
+    // Redirect or send response upon successful insertion
+    res.redirect("/login");
+  } catch (err) {
+    if (err.code === '23505') {
+      // PostgreSQL unique constraint violation error
+      }if (err.constraint === 'users_citizenship_no_key') {
+        res.render('additional_info.ejs', { error: 'Citizenship number already exists' });
+      }if (err.constraint === 'users_phone_no_key') {
+        res.render('additional_info.ejs', { error: 'Phone number already exists' });
+      
+    } else {
+      // Other database errors
+      console.error("Error saving additional information:", err);
+      const errorMessage = "Error saving additional information. Please try again later.";
+      res.render("additional_info.ejs", { error: errorMessage });
+    }
+  }
+});
+ 
+/voting
+ 
+none
+ 
+res.status(500).send("Error saving additional information");
+ 
+ if (err.constraint === 'users_username_key') {
+        res.render('signup', { error: 'Username already exists' });
+ 
+app.post("/save-additional-info", async (req, res) => {
+  const { username, first_name, last_name,  citizenship_no, phone_no, address } = req.body;
+
+  try {
+    // Insert additional information into the database
+    await db.query("INSERT INTO users (username, first_name, last_name, citizenship_no, phone_no, address) VALUES ($1, $2, $3, $4, $5 ,$6)", [username, first_name, last_name, citizenship_no, phone_no, address]);
+    
+    // Redirect or send response upon successful insertion
+    res.redirect("/login");
+  } catch (err) {
+    console.error("Error saving additional information:", err);
+    const errorMessage = "Error saving additional information. Please try again later.";
+    res.render("additional_info.ejs", { error: errorMessage });
+  }
+});
+ 
+ <% if (error) { %>
+      <p style="color: red;"><%= error %></p>
+    <% } %>
+ 
+res.status(500).send("Error saving additional information");
+ 
+    <div id="message">
+        <% if (success) { %>
+            <p><%= success %></p>
+        <% } else if (error) { %>
+            <p><%= error %></p>
+        <% } %>
+    </div>
+ 
+app.post("/vote", async (req, res) => {
+  const candidate = req.body.candidate;
+
+  try {
+    // Check if the user has already voted
+    const checkResult = await db.query("SELECT * FROM votes WHERE voter_id = $1", [req.user.id]);
+    if (checkResult.rows.length > 0) {
+      return res.render('voting.ejs', { error: 'You have already voted.', success: '' });
+    }
+
+    // Save the vote to the database
+    await db.query("INSERT INTO votes (candidate, voter_id) VALUES ($1, $2)", [candidate, req.user.id]);
+    console.log(`Vote cast for ${candidate} by user ${req.user.id}`);
+    res.render('voting.ejs', { success: 'Thank you for voting!', error: '' });
+  } catch (err) {
+    console.error("Error casting vote:", err);
+    res.render('voting.ejs', { error: 'Error casting vote. Please try again later.', success: '' });
+  }
+});
+
+ 
+app.post("/vote", async (req, res) => {
+  const candidate = req.body.candidate;
+
+  try {
+    // Check if the user has already voted
+    const checkResult = await db.query("SELECT * FROM votes WHERE voter_id = $1", [req.user.id]);
+    if (checkResult.rows.length > 0) {
+      return res.render('voting.ejs', { error: 'You have already voted.' });
+    }
+
+    // Save the vote to the database
+    await db.query("INSERT INTO votes (candidate, voter_id) VALUES ($1, $2)", [candidate, req.user.id]);
+    console.log(`Vote cast for ${candidate} by user ${req.user.id}`);
+    res.render('voting.ejs', { success: 'Thank you for voting!' });
+  } catch (err) {
+    console.error("Error casting vote:", err);
+    res.render('voting.ejs', { error: 'Error casting vote. Please try again later.' });
+  }
+});
+ 
+app.post("/vote", async (req, res) => {
+  const { candidate } = req.body;
+
+  try {
+    // Check if the user has already voted
+    const checkResult = await db.query("SELECT * FROM votes WHERE voter_id = $1", [req.user.id]);
+    if (checkResult.rows.length > 0) {
+      return res.status(400).send('You have already voted.');
+    }
+
+    // Save the vote to the database
+    await db.query("INSERT INTO votes (candidate, voter_id) VALUES ($1, $2)", [candidate, req.user.id]);
+    console.log(`Vote cast for ${candidate} by user ${req.user.id}`);
+    res.send('Thank you for voting!');
+  } catch (err) {
+    console.error("Error casting vote:", err);
+    res.status(500).send("Error casting vote");
+  }
+});
+ 
+app.post("/vote", async (req, res) => {
+  const { candidate } = req.body;
+
+  try {
+    // Check if the user has already voted
+    const checkResult = await db.query("SELECT * FROM votes WHERE voter_id = $1", [req.user.id]);
+    if (checkResult.rows.length > 0) {
+      return res.status(400).send('You have already voted.');
+    }
+
+    // Save the vote to the database
+    await db.query("INSERT INTO votes (candidate, voter_id) VALUES ($1, $2)", [candidate, req.user.id]);
+    console.log(`Vote cast for ${candidate} by user ${req.user.id}`);
+    res.send('Thank you for voting!');
+  } catch (err) {
+    console.error("Error casting vote:", err);
+    res.status(500).send("Error casting vote");
+  }
+});
+ 
+ margin-bottom: 10px;
+ 
+margin-bottom: 10px;
+ 
+none
+ 
+<label for="candidate1">Balen Shah</label>
+ 
+<label for="candidate4">Dhana Raj Acharya</label>
+ 
+<label for="candidate3">Candidate 3</label>
+ 
+<label for="candidate2">Harka Sampang</label>
+ 
+es.render("login.ejs");
+ 
+app.post("/login", passport.authenticate("local", {
+  successRedirect: "/voting",
+  
+}), (req, res) => {
+  // If authentication fails, render the login page with an error message
+  if (!req.user) {
+    res.render("login.ejs", { error: "Invalid email or password" });
+  }
+});
+ 
+})
+ 
+failureRedirect: "/login"
+ 
+ successRedirect: "/voting",
+ 
+ <% if (typeof error !== 'undefined') { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+ 
+<% if (typeof error !== 'undefined') { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+ 
+{ error: null });
+ 
+ res.render("login.ejs")
+ 
+"/login"
+ 
+ <% if (typeof error !== 'undefined') { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+ 
+app.post("/login",passport.authenticate("local", {
+    successRedirect: "/voting",
+    failureRedirect: "/login",
+  })
+);
+ 
+ if (checkResult.rows.length > 0) {
+ 
+res.redirect("/login");
+ 
+ignup
+ 
+app.post("/save-additional-info", async (req, res) => {
+  const { username, first_name, last_name,  citizenship_no, phone_no, address } = req.body;
+
+  try {
+    // Insert additional information into the database
+    await db.query("INSERT INTO users (username, first_name, last_name, citizenship_no, phone_no, address) VALUES ($1, $2, $3, $4, $5 ,$6)", [username, first_name, last_name, citizenship_no, phone_no, address]);
+    
+    // Redirect or send response upon successful insertion
+    res.redirect("/login");
+  } catch (err) {
+    console.error("Error saving additional information:", err);
+    res.status(500).send("Error saving additional information");
+  }
+});
+ 
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="sub-container">
+    <h1>CREATE NEW ACCOUNT</h1>
+    <form action="/save-additional-info" method="post" onsubmit="return validateForm()" class="login-form">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" class="design" name="username">
+      </div>
+      <div class="form-group">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" class="design" name="first_name">
+      </div>
+      <div class="form-group">
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" class="design" name="last_name">
+      </div>
+      <div class="form-group">
+        <label for="phone_no">Citizenship no.:</label>
+        <input type="number" id="citizenship_no" class="design" name="citizenship_no">
+        <span id="citizenshipNoError" style="color: red;"></span>
+      </div>
+      <div class="form-group">
+        <label for="phone_no">Phone no.:</label>
+        <input type="tel" id="phone_no" class="design" name="phone_no" maxlength="10" oninput="validatePhoneNumber()">
+        <span id="phoneNoError" style="color: red;"></span>
+      </div>
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="text" id="address" class="design" name="address">
+      </div>
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+ 
+app.post("/save-additional-info", async (req, res) => {
+  const { username, first_name, last_name,  citizenship_no, phone_no, address } = req.body;
+
+  try {
+    // Insert additional information into the database
+    await db.query("INSERT INTO users (username, first_name, last_name, citizenship_no, phone_no, address) VALUES ($1, $2, $3, $4, $5 ,$6)", [username, first_name, last_name, citizenship_no, phone_no, address]);
+    
+    // Redirect or send response upon successful insertion
+    res.redirect("/login");
+  } catch (err) {
+    console.error("Error saving additional information:", err);
+    res.status(500).send("Error saving additional information");
+  }
+});
+ 
+res.status(400).json({ error: "Username already exists" });
+ 
+if (existingUsername.rows.length > 0) {
+      // If username already exists, send error message to frontend
+ 
+// Check if username already exists in the database
+    const existingUsername = await db.query("SELECT * FROM users WHERE username = $1", [username]);
+
+ 
+app.post("/save-additional-info", async (req, res) => {
+  const { username, first_name, last_name,  citizenship_no, phone_no, address } = req.body;
+
+  try {
+    // Insert additional information into the database
+    await db.query("INSERT INTO users (username, first_name, last_name, citizenship_no, phone_no, address) VALUES ($1, $2, $3, $4, $5 ,$6)", [username, first_name, last_name, citizenship_no, phone_no, address]);
+    
+    // Redirect or send response upon successful insertion
+    res.redirect("/login");
+  } catch (err) {
+    console.error("Error saving additional information:", err);
+    res.status(500).send("Error saving additional information");
+  }
+});
+ 
+<input type="number" id="citizenship_no" class="design" name="citizenship_no">
+        <span id="citizenshipNoError" style="color: red;"></span>
+ 
+<input type="number" id="citizenship_no" class="design" name="citizenship_no">
+ 
+app.post("/save-additional-info", async (req, res) => {
+  const { username, first_name, last_name,  citizenship_no, phone_no, address } = req.body;
+
+  try {
+    // Insert additional information into the database
+    await db.query("INSERT INTO users (username, first_name, last_name, citizenship_no, phone_no, address) VALUES ($1, $2, $3, $4, $5 ,$6)", [username, first_name, last_name, citizenship_no, phone_no, address]);
+    
+    // Redirect or send response upon successful insertion
+    res.redirect("/login");
+  } catch (err) {
+    console.error("Error saving additional information:", err);
+    res.status(500).send("Error saving additional information");
+  }
+});
+ 
+ (exactly 10 digits)
+ 
+function validatePhoneNumber() {
+  var input = document.getElementById("phone_no").value;
+  var errorSpan = document.getElementById("phoneNoError");
+
+  if (/^\d{10}$/.test(input)) {
+      errorSpan.textContent = ""; // Clear error message if input is valid
+  } else {
+      errorSpan.textContent = "Please enter exactly 10 digits"; // Show error message
+  }
+}
+ 
+<div class="form-group">
+        <label for="phone_no">Phone no.:</label>
+        <input type="tel" id="phone_no" class="design" name="phone_no">
+      </div>
+ 
+.background {
+ 
+    </div>
+ 
+ </div>
+ 
+        <div class="background">
+ 
+class="background"
+ 
+</div>
+ 
+ background-color: #a7aee7; /* Choose your desired background color */
+    border-radius: 10px; /* Add some border radius for a nicer look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+    padding: 20px; /* Add some padding for spacing inside the form */
+    margin: auto;
+    width: 580px;
+ 
+    background-color: #ffffff; /* Choose your desired background color */
+    border-radius: 10px; /* Add some border radius for a nicer look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+    padding: 20px; /* Add some padding for spacing inside the form */
+ 
+</div>
+ 
+ <input type="submit" value="Vote">
+ 
+.backgr some padding for spacing inside the form */
+}
+
+ 
+ound {
+    background-color:blue; /* Choose your desired background color */
+    border-radius: 10px; /* Add some border radius for a nicer look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+    padding: 20px; /* Add
+ 
+.background{
+    margin-left: 10px;
+    background-color: red;
+    height: 500px;
+    width: 1000px;
+}
+ 
+ </div>
+ 
+ <div class="background">
+ 
+</div>
+ 
+display: flex;
+     justify-content: center;
+     align-items: center;
+ 
+block
+ 
+display: flex;
+ 
+text-align: center;
+ 
+padding-left: 10px;
+ 
+ display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+</div>
+ 
+<div class="s_timebox">
+ 
+.s_timebox{
+    display: flex;
+    height: 150px;
+    width: 150px;
+    justify-content: center;
+    align-content: center;
+}
+
+ 
+</div>
+ 
+        </div>
+ 
+   <div class="s_timebox">
+ 
+
+.s_timebox{
+    display: flex;
+    height: 150px;
+    width: 150px;
+    justify-content: center;
+    align-content
+ 
+ display: flex;
+    justify-content: center;
+    align-content: center;
+ 
+.s_timebox{
+    display: flex;
+}
+ 
+</div>
+ 
+margin-bottom: 30px;
+ 
+ padding: 20px;
+ 
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.information {
+    height: 35px;
+    width: 100%;
+    background-color: red;
+    padding-top: 1px; /* Adjust the positioning using padding */
+    padding-bottom: 25px;
+    padding-left: 10px;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 50px;
+}
+
+#currentDate {
+    padding-left: 1100px;
+    color: black !important;
+}
+
+.images {
+    height: 150px;
+    width: 150px;
+    display: block; /* Set images to block level */
+    margin: auto; /* Center images horizontally */
+}
+
+.candidate-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  justify-items: center; 
+  width: 60%;
+}
+
+.candidate-form .candidate {
+    text-align: center; /* Center align text */
+}
+
+.c1{
+    grid-area:1/1/2/2;
+}
+.c2{
+    grid-area: 1/2/2/2;
+}
+.c3{
+    grid-area: 2/1/3/2;
+}
+.c4{
+    grid-area: 2/2/3/3;
+}
+
+ 
+/* Center align items horizontally */
+ 
+  grid-gap: 20px;
+ 
+repeat(auto-fit, minmax(150px, 1fr)); /* Adjust based on your requirements */
+ 
+</div>
+ 
+class="candidate-form"
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Page</title>
+    <link rel="stylesheet" href="/voting_page.css">
+</head>
+<body>
+    <div class="information">
+        <p>View the list of candidates and their profiles below. <br>
+        Note: "Please be aware that the voting window is monitored. Kindly ensure to submit your vote before the allotted time expires"</p>
+        <span id="currentDate"></span>
+    </div>
+
+    <form action="/vote" method="post">
+        <div class="candidate-form">
+        <div class="candidate">
+            <img class="images" src="/img/candidate_1.jpg" alt="Candidate 1">
+            <label for="candidate1">Balen</label>
+            <input type="radio" id="candidate1" name="candidate" value="candidate1">
+        </div>
+        <div class="candidate">
+            <img class="images" src="/img/candidate_2.webp" alt="Candidate 2">
+            <label for="candidate2">Candidate 2</label>
+            <input type="radio" id="candidate2" name="candidate" value="candidate2">
+        </div>
+        <div class="candidate">
+            <img class="images" src="/img/candidate_3.jpg" alt="Candidate 3">
+            <label for="candidate3">Candidate 3</label>
+            <input type="radio" id="candidate3" name="candidate" value="candidate3">
+        </div>
+        <div class="candidate">
+            <img class="images" src="/img/candidate_4.jpg" alt="Candidate 4">
+            <label for="candidate4">Candidate 4</label>
+            <input type="radio" id="candidate4" name="candidate" value="candidate4">
+        </div>
+    </div>
+        <input type="submit" value="Vote">
+    </form>
+
+    <script src="/index.js"></script>
+</body>
+</html>
+
+ 
+</div>
+ 
+class="candidate-form"
+ 
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.information{
+    height: 35px;
+    width: 100%;
+    background-color: red;
+    padding-top: 1px; /* Adjust the positioning using padding */
+    padding-bottom: 25px;
+    padding-left: 10px;
+    color: white;
+    font-size: 16px;
+    }
+
+    #currentDate{
+        padding-left: 1100px;
+        color: black !important;
+
+    }
+
+    .images{
+        height: 100px;
+        width: 100px;
+    }
+
+
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Page</title>
+    <link rel="stylesheet" href="/voting_page.css">
+</head>
+<body>
+    <div class="information">
+        <p>View the list of candidate and their profile below <br>
+        Note: "Please be aware that voting window is monitered. Kindly ensure to submit your vote before the alloted time exprires"</p>
+
+    <span id="currentDate"></span>
+</div>
+
+
+
+
+    <form action="/vote" method="post">
+        <p>Choose your candidate:</p>
+        <label for="candidate1">
+            <input type="radio" id="candidate1" name="candidate" value="candidate1">Balen
+            <img class="images" src="/img/candidate_1.jpg" alt="Candidate 1">
+        </label>
+        <label for="candidate2">
+            <input type="radio" id="candidate2" name="candidate" value="candidate2">
+            <img class="images" src="/img/candidate_2.webp" alt="Candidate 2">
+        </label>
+        <label for="candidate3">
+            <input type="radio" id="candidate3" name="candidate" value="candidate3">
+            <img class="images" src="/img/candidate_3.jpg" alt="Candidate 3">
+        </label>
+        <label for="candidate4">
+            <input type="radio" id="candidate4" name="candidate" value="candidate4">
+            <img class="images" src="/img/candidate_4.jpg" alt="Candidate 3">
+        </label>
+        <input type="submit" value="Vote">
+    </form>
+
+    <script src="/index.js"></script>
+</body>
+</html>
+
+ 
+Balen
+ 
+candidate_4.jpg
+ 
+candidate_1.jpg
+ 
+candidate_3.jpg
+ 
+display: flex;
+ 
+</div>
+ 
+<p>The current date is: <%= currentDate %></p>
+ 
+<form action="/vote" method="post">
+        <p>Choose your candidate:</p>
+        <input type="radio" id="candidate1" name="candidate" value="candidate1">
+        <label for="candidate1">Candidate 1</label><br>
+        <input type="radio" id="candidate2" name="candidate" value="candidate2">
+        <label for="candidate2">Candidate 2</label><br>
+        <input type="submit" value="Vote">
+    </form>
+ 
+  /* Adjust the positioning using padding */
+ 
+   padding-top: 10px;
+ 
+.information{
+    height: 35px;
+    width: 100%;
+    background-color: red;
+    margin:0;
+    padding-top: 10px; /* Adjust the positioning using padding */
+    }
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Page</title>
+    <link rel="stylesheet" href="/voting_page.css">
+</head>
+<body>
+    <div class="information">
+        <p>View the list of candidate and their profile below <br>
+        Note: "Please be aware that voting window is monitered. Kindly ensure to submit your vote before the alloted time exprires"</p>
+    </div>
+</body>
+</html>
+
+ 
+<div class="information">
+ 
+.information {
+        height: 35px;
+        width: 100%;
+        background-color: red;
+ 
+ margin:-10px;
+ 
+<%- include('partials/header') %>
+
+
+
+
+
+<%- include('partials/footer') %>
+ 
+<h1 id="hello">Hello world</h1>
+ 
+background-color:#f1eeee;
+  border-radius: 10px;
+  
+ 
+Host_name="localhost"
+DB_name="voting_system_database"
+Password="Godsking@123"
+Port="5432"
+ 
+ "Godsking@123"
+ 
+ "voting_system_database"
+ 
+user: "postgres",
+  host: "localhost",
+  database: "voting_system_database",
+  password: "Godsking@123",
+  port: 5432,
+ 
+User_name="postgres";
+Host_name="localhost";
+DB_name="voting_system_database";
+Password="Godsking@123";
+Port="5432";
+ 
+arseInt(process.env.Port)
+ 
+process.env.Port
+ 
+User_name="postgres";
+Host_name="localhost";
+DB_name="voting_system_database";
+Password="Godsking@123";
+Port="5432";
+ 
+5432
+ 
+"Godsking@123"
+ 
+"voting_system_database"
+ 
+"localhost"
+ 
+"postgres"
+ 
+app.post("/save-additional-info", (req, res) => {
+  const { username, first_name, last_name, phone_no, address } = req.body;
+
+  const query =
+    "INSERT INTO additional_info (username, first_name, last_name, phone_no, address) VALUES ($1, $2, $3, $4, $5)";
+  const values = [username, first_name, last_name, phone_no, address];
+
+  db.query(query, values)
+    .then(() => res.send("Additional information saved successfully"))
+    .catch((err) => {
+      console.error("Error executing query", err);
+      res.status(500).send("Error saving additional information");
+    });
+});
+ 
+
+/* Add this CSS to manage the layout */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.sub-container form {
+  width: 100%;
+}
+
+ 
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="sub-container">
+    <h1>CREATE NEW ACCOUNT</h1>
+    <form action="/save-additional-info" method="post">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+      </div>
+      <div class="form-group">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name">
+      </div>
+      <div class="form-group">
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name">
+      </div>
+      <div class="form-group">
+        <label for="phone_no">Phone no.:</label>
+        <input type="tel" id="phone_no" name="phone_no">
+      </div>
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address">
+      </div>
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+ 
+/* Add this CSS to manage the layout */
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.sub-container form {
+  width: 100%;
+}
+ 
+<%- include('partials/header') %>
+
+  <div class="container">
+    <div class="sub-container">
+      <h1>CREATE NEW ACCOUNT</h1>
+      <form action="/save-additional-info" method="post">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name">
+          </div>
+          <div class="form-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone_no">Phone no.:</label>
+            <input type="tel" id="phone_no" name="phone_no">
+          </div>
+          <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address">
+          </div>
+        </div>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <%- include('partials/footer') %>
+ 
+<%- include('partials/header') %>
+
+
+<div class="container">
+    <div class="sub-container">
+      <h1>CREATE NEW ACCOUNT</h1>
+      <form action="/save-additional-info" method="post">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" >
+
+          <label for="first_name">First Name:</label>
+          <input type="text" id="first_name" name="first_name">
+
+          <label for="middle_name">Middle Name:</label>
+          <input type="text" id="middle_name" name="middle_name" >
+
+          <label for="phone_no">Phone no.:</label>
+          <input type="tel" id="phone_no" name="phone_no">
+
+          <label for="citizenship_no">Citizenship no.:</label>
+          <input type="text" id="citizenship_no" name="citizenship_no" >
+
+          <label for="address">Address:</label>
+          <input type="text" id="address" name="address" >
+
+          <label for="last_name">Last Name:</label>
+          <input type="text" id="last_name" name="last_name">
+
+          <button type="submit" class="btn">Submit</button>
+    </div>
+  </div>
+
+  <%- include('partials/footer') %>
+
+ 
+<%- include('partials/header') %>
+
+
+<div class="container">
+    <div class="sub-container">
+      <h1>CREATE NEW ACCOUNT</h1>
+      <form action="/save-additional-info" method="post">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" >
+
+          <label for="first_name">First Name:</label>
+          <input type="text" id="first_name" name="first_name">
+
+          <label for="middle_name">Middle Name:</label>
+          <input type="text" id="middle_name" name="middle_name" >
+
+          <label for="phone_no">Phone no.:</label>
+          <input type="tel" id="phone_no" name="phone_no">
+
+          <label for="citizenship_no">Citizenship no.:</label>
+          <input type="text" id="citizenship_no" name="citizenship_no" >
+
+          <label for="address">Address:</label>
+          <input type="text" id="address" name="address" >
+
+          <label for="last_name">Last Name:</label>
+          <input type="text" id="last_name" name="last_name">
+
+          <button type="submit" class="btn">Submit</button>
+    </div>
+  </div>
+
+  <%- include('partials/footer') %>
+
+ 
+.new-container{
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.new-container button:hover {
+  background-color: #0056b3;
+}
+ 
+ /* Blue button background color */
+ 
+ /* White text color */
+ 
+/* Darker shade of blue on hover */
+ 
+input[type="password"]
+ 
+ input[type="email"]
+ 
+
+.additional-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+ 
+.additional-container h1 {
+  text-align: center;
+  color: #3498db;
+  margin-bottom: 30px;
+}
+
+.additional-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.additional-container input[type="text"],
+.additional-container input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+ 
+<h1>Additional Information</h1>
+ 
+<br>
+ 
+<br>
+ 
+<br>
+ 
+
+</body>
+</html>
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/aditionalinfo.css">
+</head>
+<body>
+    
+ 
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 
+ 
+.additional-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .additional-container h1 {
+    text-align: center;
+    color: #3498db;
+    margin-bottom: 30px;
+  }
+  
+  .additional-container label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .additional-container input[type="text"],
+  .additional-container input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+ 
+ /* Adjust the URL to your actual background image */
+ 
+</body>
+</html>
+ 
+<%- include('partials/header') %>
+ 
+<div class="container">
+     <div class="additional-container">
+      <h1>Additional Page</h1>
+      <h1>Additional Information</h1>
+      <form action="/save-additional-info" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" >
+  
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name">
+  
+        <label for="middle_name">Middle Name:</label>
+        <input type="text" id="middle_name" name="middle_name" >
+  
+        <label for="phone_no">Phone no.:</label>
+        <input type="tel" id="phone_no" name="phone_no">
+  
+        <label for="citizenship_no">Citizenship no.:</label>
+        <input type="text" id="citizenship_no" name="citizenship_no" >
+  
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" >
+  
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name">
+      </form>
+    </div>
+  </div>
+
+  
+ 
+</div>
+ 
+<div class="sub-container">
+ 
+.additional-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  background-color: #ecf0f1;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  display: grid; /* Apply display grid to the container */
+  grid-template-columns: auto auto; /* Two columns */
+  gap: 10px; /* Gap between grid items */
+}
+
+.additional-container h1 {
+  text-align: center;
+  color: #3498db;
+  margin-bottom: 20px;
+}
+
+.additional-container form {
+  margin-bottom: 20px;
+}
+
+.additional-container label {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.additional-container input[type="text"],
+.additional-container input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.additional-container input[type="text"]:focus,
+.additional-container input[type="tel"]:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.additional-container button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.additional-container button[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+ 
+.sub-container{
+  display: grid;
+  height: 100px;
+  width: 100px;
+}
+ 
+</div>
+ 
+ display: grid;
+ 
+* Additional page specific styling */
+.additional-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+ 
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="additional-container">
+    <h1>Additional Page</h1>
+    <h1>Additional Information</h1>
+    <form action="/save-additional-info" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" >
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name">
+        <label for="middle_name">Middle Name:</label><br>
+        <input type="text" id="middle_name" name="middle_name" >
+        <label for="phone_no">Phone no.:</label>
+        <input type="tel" id="phone_no" name="phone_no">
+        <label for="citizenship_no">Citizenship no.:</label>
+        <input type="text" id="citizenship_no" name="citizenship_no" >
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" >
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name">
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+ 
+.additional-container h1 {
+  text-align: center;
+  color: #3498db;
+  margin-bottom: 30px;
+}
+
+.additional-container p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.additional-container a {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.additional-container a:hover {
+  color: #2980b9;
+}
+ 
+.additional-container {
+  width: 500px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.additional-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.additional-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.additional-container input[type="text"],
+.additional-container input[type="tel"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.additional-container input[type="submit"] {
+  width: 100%;
+  padding: 8px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.additional-container input[type="submit"]:hover {
+  background-color: #45a049;
+}
+ 
+/* Additional page specific styling */
+ 
+.additional-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  background-color: #ecf0f1;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.additional-container h1 {
+  text-align: center;
+  color: #3498db;
+  margin-bottom: 30px;
+}
+
+.additional-container form {
+  margin-bottom: 20px;
+}
+
+.additional-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.additional-container input[type="text"],
+.additional-container input[type="tel"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.additional-container input[type="text"]:focus,
+.additional-container input[type="tel"]:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.additional-container button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.additional-container button[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+ 
+.additional-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  background-color: #ecf0f1;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.additional-container h1 {
+  text-align: center;
+  color: #3498db;
+  margin-bottom: 30px;
+}
+
+.additional-container p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.additional-container a {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.additional-container a:hover {
+  color: #2980b9;
+}
+ 
+
+/* Additional page specific styling */
+.additional-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  background-color: #ecf0f1;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.additional-container h1 {
+  text-align: center;
+  color: #3498db;
+  margin-bottom: 30px;
+}
+
+.additional-container p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.additional-container a {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.additional-container a:hover {
+  color: #2980b9;
+}
+
+ 
+.additional-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.additional-container h1 {
+  text-align: center;
+}
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Additional Information</title>
+</head>
+<body>
+    <h1>Additional Information</h1>
+    <form action="/save-additional-info" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" >
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name">
+        <label for="middle_name">Middle Name:</label><br>
+        <input type="text" id="middle_name" name="middle_name" >
+        <label for="phone_no">Phone no.:</label>
+        <input type="tel" id="phone_no" name="phone_no">
+        <label for="citizenship_no">Citizenship no.:</label>
+        <input type="text" id="citizenship_no" name="citizenship_no" >
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" >
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name">
+
+
+
+
+ 
+ <!-- Your content for the additional page goes here -->
+ 
+readonly value="{{last_name}}
+ 
+readonly value="{{phone_no}}
+ 
+readonly value="{{address}}"
+ 
+readonly value="{{citizenship_no}}"
+ 
+<br>
+ 
+<br>
+ 
+<br>
+ 
+<br>
+ 
+<br>
+ 
+<br>
+ 
+<br>
+ 
+<br>
+ 
+<br>
+ 
+readonly value="{{middle_name}}"
+ 
+readonly value="{{first_name}}"
+ 
+readonly value="{{username}}"
+ 
+readonly value="{{username}}">
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Additional Information</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Additional Information</title>
+</head>
+<body>
+    <h1>Additional Information</h1>
+    <form action="/save-additional-info" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" readonly value="{{username}}"><br>
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name" readonly value="{{first_name}}"><br>
+        <label for="middle_name">Middle Name:</label><br>
+        <input type="text" id="middle_name" name="middle_name" readonly value="{{middle_name}}"><br>
+        <label for="phone_no">Phone no.:</label><br>
+        <input type="tel" id="phone_no" name="phone_no" readonly value="{{phone_no}}"><br>
+        <label for="citizenship_no">Citizenship no.:</label><br>
+        <input type="text" id="citizenship_no" name="citizenship_no" readonly value="{{citizenship_no}}"><br>
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address" readonly value="{{address}}"><br>
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name" readonly value="{{last_name}}
+</body>
+</html>
+ 
+<h1>Additional Information</h1>
+    <form action="/save-additional-info" method="post">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <button type="submit">Save Additional Information</button>
+    </form>
+ 
+console.log("success");
+ 
+ display: block;
+    height: 50px;
+    width: 50px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color:white;
+    text-decoration: none;
+    border-radius: 10px;
+    background-color: red;
+ 
+height: 50px;
+    width: 50px;
+ 
+  height: 50px;
+ 
+/div>
+ 
+"TOPSECRETWORD"
+ 
+"TOPSECRETWORD"
+ 
+app.post("/login", async (req, res) => {
+  const email = req.body.username;
+  const loginPassword = req.body.password;
+
+  try {
+    const result = await db.query("SELECT * FROM voters WHERE email = $1", [
+      email,
+    ]);
+    if (result.rows.length > 0) {
+      const user = result.rows[0];
+      const storedHashedPassword = user.password;
+      //verifying the password
+      bcrypt.compare(loginPassword, storedHashedPassword, (err, result) => {
+        if (err) {
+          console.error("Error comparing passwords:", err);
+        } else {
+          if (result) {
+            res.render("voting.ejs");
+          } else {
+            res.send("Incorrect Password");
+          }
+        }
+      });
+    } else {
+      res.send("User not found");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+ 
+passport.use(
+  new Strategy(async function verify(username, password, cb) {})
+ 
+res.render("voting.ejs");
+ 
+console.log("Hashed Password:", hash);
+ 
+res.send("Email already exists. Try logging in.");
+ 
+res.send("Email already exists. Try logging in.");
+ 
+ "session": "^0.1.0"
+ 
+"env": "^0.0.2",
+ 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
+ 
+import session from "express-session";
+ 
+import env from "dotenv";
+ 
+import session from "express-session";
+import env from "dotenv";
+ 
+<div> <!-- New div for Confirm Password -->
+        <label for="confirm_password">Confirm Password</label>
+        <div class="password-input-wrapper">
+          <input type="password" class="form-control" id="confirmPasswordInput" name="confirm_password">
+          <span class="toggle-password" onclick="togglePasswordVisibility('confirmPasswordInput')">
+            <i class="fas fa-eye"></i> <!-- Font Awesome eye icon -->
+          </span>
+        </div>
+      </div>
+ 
+<div> <!-- New div for Confirm Password -->
+        <label for="confirm_password">Confirm Password</label>
+        <div class="password-input-wrapper">
+          <input type="password" class="form-control" id="confirmPasswordInput" name="confirm_password">
+          <span class="toggle-password" onclick="togglePasswordVisibility('confirmPasswordInput')">
+            <i class="fas fa-eye"></i> <!-- Font Awesome eye icon -->
+          </span>
+        </div>
+      </div>
+ 
+<h1 id="hello">Hello world</h1>
+ 
+div class="navigation_bar">
+  <div class="left_items">
+    <a class="nav eBallot" href="">eBallot</a>
+    <a class="nav" href="">About Us</a>
+    <a class="nav" href="">Programs</a>
+    <a class="nav" href="">Contacts</a>
+  </div>
+  <div class="right_items">
+    <a class="nav main login" href="/login" role="button">Login</a>
+    <a class="nav main sign_up" href="/register" role="button">Sign Up</a>
+  </div>
+</div>
+ 
+app.post("/register", async (req, res) => {
+const email=req.body.username;
+const password=req.body.password;
+
+});
+
+app.post("/login", async (req, res) => {});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+ 
+pp.use(express.static('public'));
+ 
+// function togglePasswordVisibility() {
+//   const passwordInput = document.getElementById('passwordInput');
+//   const togglePasswordIcon = document.querySelector('.toggle-password i');
+
+//   if (passwordInput.type === 'password') {
+//     passwordInput.type = 'text';
+//     togglePasswordIcon.classList.remove('fa-eye');
+//     togglePasswordIcon.classList.add('fa-eye-slash');
+//   } else {
+//     passwordInput.type = 'password';
+//     togglePasswordIcon.classList.remove('fa-eye-slash');
+//     togglePasswordIcon.classList.add('fa-eye');
+//   }
+// }
+ 
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="login-container">
+    <h1>Register</h1>
+    <!-- Makes POST request to /register route -->
+    <form action="/register" method="POST">
+      <div>
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="username">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input type="password" class="form-control" id="passwordInput" name="password">
+          <span class="toggle-password" onclick="togglePasswordVisibility()">
+            <i class="fas fa-eye"></i> <!-- Font Awesome eye icon -->
+          </span>
+        </div>
+      </div>
+      <div> <!-- New div for Confirm Password -->
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" class="form-control" name="confirm_password">
+      </div>
+      <button type="submit" class="btn btn-dark">Register</button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+
+ 
+
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="login-container">
+    <h1>Register</h1>
+    <!-- Makes POST request to /register route -->
+    <form action="/register" method="POST">
+      <div>
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="username">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password">
+      </div>
+      <div> <!-- New div for Confirm Password -->
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" class="form-control" name="confirm_password">
+      </div>
+      <button type="submit" class="btn btn-dark">Register</button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+ 
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePasswordIcon = document.querySelector('.toggle-password i');
+  
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      togglePasswordIcon.classList.remove('fa-eye');
+      togglePasswordIcon.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      togglePasswordIcon.classList.remove('fa-eye-slash');
+      togglePasswordIcon.classList.add('fa-eye');
+    }
+  }
+  
+ 
+<script>
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePasswordIcon = document.querySelector('.toggle-password i');
+  
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      togglePasswordIcon.classList.remove('fa-eye');
+      togglePasswordIcon.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      togglePasswordIcon.classList.remove('fa-eye-slash');
+      togglePasswordIcon.classList.add('fa-eye');
+    }
+  }
+  
+  </script>
+ 
+passwordInput.style.width = ''; // Reset width to auto
+ 
+padding:10px;
+ 
+passwordInput.style.width = '217px'; // Maintain current width
+      passwordInput.style.height = '32px'; // Maintain current width
+ 
+ .password-input-wrapper input[type="password"] {
+    padding-right: 35px; /* Adjust as needed to accommodate the icon */
+  }
+  
+ 
+// Reset width to auto
+ 
+passwordInput.style.width = passwordInput.clientWidth + 'px'; // Maintain current width
+ 
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="login-container">
+    <h1>Register</h1>
+    <!-- Makes POST request to /register route -->
+    <form action="/register" method="POST">
+      <div>
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="username">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password">
+      </div>
+      <button type="submit" class="btn btn-dark">Register</button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+ 
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="register-container">
+    <h1>Register</h1>
+    <!-- Makes POST request to /register route -->
+    <form action="/register" method="POST">
+      <div>
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="username">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password">
+      </div>
+      <button type="submit" class="btn btn-dark">Register</button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+ 
+<%- include('partials/header') %>
+  <div class="">
+    <h1>Register</h1>
+
+    
+        
+
+            <!-- Makes POST request to /register route -->
+            <form action="/register" method="POST">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="username">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password">
+              </div>
+              <button type="submit" class="btn btn-dark">Register</button>
+            </form>
+
+   
+  </div>
+
+  <%- include('partials/header') %>
+ 
+container mt-5
+ 
+ </div>
+ 
+  <div class="card-body">
+ 
+ </div>
+        </div>
+      </div>
+
+ 
+<div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+ 
+<div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+ 
+<!-- <div class="col-sm-4">
+      <div class="card social-block">
+        <div class="card-body">
+          <a class="btn btn-block" href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign Up with Google
+          </a>
+        </div>
+      </div>
+    </div> -->
+ 
+.password-input-wrapper {
+    position: relative;
+  }
+  
+  .password-input-wrapper input[type="password"] {
+    padding-right: 35px; /* Adjust as needed to accommodate the icon */
+    transition: width 0.3s; /* Add transition for smoother animation */
+  }
+  
+  .password-input-wrapper .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+ 
+unction togglePasswordVisibility() {
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePasswordIcon = document.querySelector('.toggle-password i');
+  
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      togglePasswordIcon.classList.remove('fa-eye');
+      togglePasswordIcon.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      togglePasswordIcon.classList.remove('fa-eye-slash');
+      togglePasswordIcon.classList.add('fa-eye');
+    }
+  }
+ 
+
+  .password-input-wrapper {
+    position: relative;
+  }
+  
+  .password-input-wrapper input[type="password"] {
+    padding-right: 35px; /* Adjust as needed to accommodate the icon */
+  }
+  
+  .password-input-wrapper .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+ 
+.password-input-wrapper {
+    position: relative;
+    display: flex; /* Use flexbox to keep label and input on the same line */
+    align-items: center; /* Vertically center items */
+  }
+  
+  .toggle-password {
+    cursor: pointer;
+  }
+  
+  /* Adjust the input field padding to create space for the eye icon */
+  .form-control {
+    padding-right: 30px; /* Adjust as needed */
+  }
+  
+  /* Set a fixed height for the container to prevent it from changing */
+  .container {
+    min-height: 50px; /* Adjust as needed */
+  }
+  
+ 
+.password-input-wrapper {
+    position: relative;
+    display: flex; /* Use flexbox to keep label and input on the same line */
+    align-items: center; /* Vertically center items */
+  }
+ 
+ /* Adjust the input field padding to create space for the eye icon */
+  .form-control {
+    padding-right: 30px; /* Adjust as needed */
+  }
+  
+  /* Set a fixed height for the container to prevent it from changing */
+  .container {
+    min-height: 50px; /* Adjust as needed */
+  }
+ 
+position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+ 
+.password-input-wrapper {
+    position: relative;
+    display: inline-block; /* Use inline-block to prevent the container from expanding */
+  }
+  
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 5px; /* Adjust the right position */
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+ 
+.password-input-wrapper {
+    position: relative;
+    display: inline-block; /* Use inline-block to prevent the container from expanding */
+    vertical-align: top; /* Align the container's top edge with the top of the input */
+  }
+  
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 5px; /* Adjust the right position */
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  /* Adjust the input field padding to create space for the eye icon */
+  .form-control {
+    padding-right: 30px; /* Adjust as needed */
+    box-sizing: border-box; /* Include padding in the input's width calculation */
+  }
+  
+  /* Set a fixed height for the container to prevent it from changing */
+  .container {
+    min-height: 50px; /* Adjust as needed */
+  }
+  
+  
+ 
+.password-input-wrapper {
+    position: relative;
+    display: flex; /* Use flexbox to keep label and input on the same line */
+    align-items: center; /* Vertically center items */
+  }
+  
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  /* Adjust the input field padding to create space for the eye icon */
+  .form-control {
+    padding-right: 30px; /* Adjust as needed */
+  }
+  
+  /* Set a fixed height for the container to prevent it from changing */
+  .container {
+    min-height: 50px; /* Adjust as needed */
+  }
+ 
+.password-input-wrapper {
+    position: relative;
+    display: inline-block; /* Ensures the wrapper only takes up the necessary width */
+  }
+  
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  /* Adjust the input field padding to create space for the eye icon */
+  .form-control {
+    padding-right: 30px; /* Adjust as needed */
+  }
+  
+ 
+.password-input-wrapper {
+    position: relative;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+ 
+<script src="/public/index.js"></script>
+ 
+<!-- Font Awesome eye icon -->
+ 
+<div>
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="passwordInput" name="password">
+      </div>
+ 
+ <!-- Add this link in the <head> section of your HTML -->
+ 
+<label for="showPasswordCheckbox">Show Password</label>
+        <input type="checkbox" id="showPasswordCheckbox"> <!-- Checkbox for toggling password visibility -->
+ 
+ <div>
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password">
+        
+          <input type="checkbox" id="showPasswordCheckbox"> <!-- Checkbox for toggling password visibility -->
+          <label for="showPasswordCheckbox">Show Password</label>
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="passwordInput" name="password">
+        
+        
+      </div>
+ 
+<label for="password">Password</label>
+        <input type="password" class="form-control" name="password">
+ 
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('blue-background.jpg'); /* Adjust the URL to your actual background image */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .login-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-container h1 {
+    text-align: center;
+    color: #333; /* Dark text color */
+  }
+  
+  .login-container input[type="email"],
+  .login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .login-container button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff; /* Blue button background color */
+    color: #fff; /* White text color */
+    cursor: pointer;
+  }
+  
+  .login-container button:hover {
+    background-color: #0056b3; /* Darker shade of blue on hover */
+  }
+  
+  
+ 
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-container h1 {
+    text-align: center;
+  }
+ 
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-container h1 {
+    text-align: center;
+  }
+ 
+.login{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: center;
+}
+ 
+<%- include('partials/header') %>
+
+<div>
+  
+
+  <div class="login">
+    <h1>Login</h1>
+          <!-- Makes POST request to /login route -->
+          <form action="/login" method="POST">
+            <div>
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="username">
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <input type="password" class="form-control" name="password">
+            </div>
+            <button type="submit" class="btn btn-dark">Login</button>
+          </form>
+        </div>
+</div>
+
+<%- include('partials/footer') %>
+
+ 
+ <h1>Login</h1>
+ 
+flex-wrap: nowrap
+ 
+<h1>Login</h1>
+ 
+ </div>
+    </div>
+  </div>
+ 
+ <div>
+      <div>
+        <div>
+ 
+    <!-- <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <a  href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign In with Google
+          </a>
+        </div>
+      </div>
+    </div> -->
+ 
+ class="form-group"
+ 
+class="form-group"
+ 
+class="card-body"
+ 
+class="card"
+ 
+class="col-sm-8"
+ 
+"container mt-5"
+ 
+class="btn btn-block"
+ 
+/* Ensure the background image covers the entire body */
+ 
+/* Set the body height to 100% of the viewport height */
+ 
+  /* background: linear-gradient(to bottom, #004c98, #101214); */
+ 
+ height: 100px;
+    width: 100px;
+ 
+  height: 100vh;
+ 
+background: url('images/Homepg.png');
+ 
+background: linear-gradient(to bottom, #004c98, #101214);
+ 
+justify-content: space-between;
+ 
+/* Transparent background */
+ 
+/* Add padding to space out items from edges */
+ 
+/* Align items vertically */
+ 
+/* Distribute items evenly */
+ 
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(to bottom, #004c98, #101214);
+}
+
+.navigation_bar {
+    display: flex;
+    justify-content: space-between; /* Distribute items evenly */
+    align-items: center; /* Align items vertically */
+    margin-top: 20px;
+    padding: 0 20px; /* Add padding to space out items from edges */
+}
+
+.nav {
+    text-decoration: none;
+    color: white;
+}
+
+.main {
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 6px 20px;
+    background-color: rgba(93, 163, 207, 0.2); /* Transparent background */
+    color: white;
+    text-decoration: none;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .navigation_bar {
+        flex-direction: column; /* Stack items vertically */
+    }
+
+    .main {
+        margin-top: 10px; /* Add space between buttons */
+    }
+}
+ 
+<%- include('partials/header') %>
+
+
+<div class="navigation_bar">
+  <div><a class="nav eBallot" href="">eBallot</a> </div>
+  <div><a class="nav" href="">About Us</a> </div>
+  <div><a class="nav" href="">Programs</a> </div>
+  <div><a class="nav" href="">Contacts</a> </div>
+  <div><a class="nav main login" href="/login" role="button">Login</a> </div>
+  <div><a class="nav main sign_up" href="/register" role="button">Sign Up</a> </div>
+  
+</div>
+
+<%- include('partials/footer') %>
+
+ 
+<%- include('partials/header') %>
+
+
+<div class="navigation_bar">
+  <div><a class="nav eBallot" href="">eBallot</a> </div>
+  <div><a class="nav" href="">About Us</a> </div>
+  <div><a class="nav" href="">Programs</a> </div>
+  <div><a class="nav" href="">Contacts</a> </div>
+  <div><a class="nav main login" href="/login" role="button">Login</a> </div>
+  <div><a class="nav main sign_up" href="/register" role="button">Sign Up</a> </div>
+  
+</div>
+
+<%- include('partials/footer') %>
+
+ 
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(to bottom, #004c98, #101214);
+}
+
+.navigation_bar {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    justify-content: flex-end; /* Align items to the right */
+}
+
+.nav {
+    text-decoration: none;
+    color: white;
+    margin-left: 30px;
+}
+
+.eBallot {
+    margin-left: 15px;
+}
+
+.main {
+    border: 1px solid white;
+    border-radius: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.login,
+.sign_up {
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 6px 20px;
+    margin-left: 15px; /* Keep some space between buttons */
+    background-color: rgba(93, 163, 207, 0.2); /* Transparent background */
+    color: white;
+    text-decoration: none;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .login,
+    .sign_up {
+        margin-left: 0; /* Remove left margin */
+        margin-top: 10px; /* Add top margin to create space */
+    }
+}
+
+ 
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(to bottom, #0a4580, #101418);
+
+}
+
+.navigation_bar {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.nav {
+    text-decoration: none;
+    color: white;
+    margin-left: 30px;
+}
+
+.eBallot {
+    margin-left: 15px;
+}
+
+.main {
+    border: 1px solid white;
+    border-radius: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.login {
+    margin-left: 715px;
+}
+
+.sign_up {
+    background-color: rgb(93, 163, 207);
+}
+ 
+#b3d9ff, #004080
+ 
+.sign_up {
+    background-color: rgb(93, 163, 207);
+}
+ 
+.login {
+    margin-left: 715px;
+}
+ 
+#b3d9ff, #004080
+ 
+ margin: 0;
+    padding: 0;
+    height: 100vh;
+ 
+ /* Full viewport height */
+ 
+
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        /* Full viewport height */
+        background: linear-gradient(to bottom, #04223f, #004080);
+ 
+ body {
+ 
+ margin: 0;
+    padding: 0;
+    height: 100vh; /* Full viewport height */
+    background: linear-gradient(to bottom, blue 0%, blue 50%, white 50%, white 100%);
+ 
+margin: 0;
+    padding: 0;
+    height: 100vh; /* Full viewport height */
+    background: linear-gradient(to bottom, blue 0%, blue 50%, white 50%, white 100%);
+ 
+   background: linear-gradient(to bottom, blue 50%, white 50%);
+ 
+background-color: rgb(44, 44, 214);
+ 
+<div class="jumbotron centered">
+  <div class="container">
+
+    
+  </div>
+</div>
+ 
+<nav >
+      <a class="nav" href="">eBallot</a>
+      <a class="nav" href="">About Us</a>
+      <a class="nav" href="">Programs</a>
+      <a class="nav" href="">Contacts</a>
+      <a class="nav" href="/register" role="button">Register</a>
+      <a class="nav" href="/login" role="button">Login</a>
+  </nav>
+ 
+ margin-top:10px;
+ 
+border: 1px solid white;
+ 
+ padding-top:5px;
+    padding-bottom:5px;
+    padding-right: 5px;
+    padding-left: 5px;
+ 
+adding: 10px;
+ 
+width: 10px;
+    height: 10px;
+ 
+class="nav sign_up"
+ 
+class="nav login"
+ 
+class="nav 
+ 
+class="nav"
+ 
+class="nav"
+ 
+class="nav"
+ 
+class="nav"
+ 
+display: grid;
+grid-template-columns:0.8fr 1fr 1fr 7fr 1fr 1fr;
+ 
+ <div><a class="nav" href="/register" role="button">Register</a> </div>
+ 
+12% 14% 14% 40% 12% 10%
+ 
+ 1fr 1fr 1fr 1fr 1fr 1fr
+ 
+</div>
+ 
+</div>
+ 
+grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+ 
+grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+ 
+flex-wrap: wrap;
+ 
+</div>
+ 
+ flex-wrap: wrap;
+ 
+justify-content: center;
+ 
+ justify-content: center;
+ 
+*{
+      background: linear-gradient(300deg, #00bfff, #ef8172);;
+}
+
+ 
+*{
+    background-color: black;
+}
+ 
+  text-decoration-line: none;
+ 
+<link rel="stylesheet" href="css/styles.css">
+ 
+class="btn btn-dark btn-lg" 
+ 
+class="btn btn-light btn-lg"
+ 
+</nav>
+ 
+ <i class="fas fa-key fa-6x"></i>
+    <h1 class="display-3">Secrets</h1>
+    <p class="lead">Don't keep your secrets, share them anonymously!</p>
+    <hr>
+ 
