@@ -60,11 +60,12 @@ app.get("/logout", (req, res) => {
 app.get("/voting", (req, res) => {
   // console.log(req.user);
   if (req.isAuthenticated()) {
-    res.render("voting.ejs");
+    res.render('voting.ejs');
   } else {
     res.redirect("/login");
   }
 });
+
 
 app.get("/addtional-info",(req,res)=>{
   res.render("additional_info.ejs");

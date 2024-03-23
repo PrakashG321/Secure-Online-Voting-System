@@ -33,6 +33,8 @@ function validatePhoneNumber() {
 
 
 // Function to update the current date
+
+
 function updateCurrentDate() {
   // Create a new Date object
   var currentDate = new Date();
@@ -54,3 +56,35 @@ window.onload = function() {
   updateCurrentDate();
 };
 
+   // Set the end date for the voting period
+   var endDate = new Date('2024-03-23T12:00:00'); // Example end date and time
+
+   // Function to update the timer
+   function updateTimer() {
+    var now = new Date();
+    var timeDifference = endDate - now;
+
+    console.log("Now:", now);
+    console.log("End Date:", endDate);
+    console.log("Time Difference (milliseconds):", timeDifference);
+
+    if (timeDifference > 0) {
+        var hours = Math.floor(timeDifference / (1000 * 60 * 60));
+        var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        document.querySelector('.timing').textContent = hours + ":" + minutes + ":" + seconds;
+    } else {
+        document.querySelector('.timing').textContent = "Voting Closed";
+    }
+}
+
+   // Update timer every second
+   setInterval(updateTimer, 1000);
+
+   // Initial call to update timer
+   updateTimer();

@@ -127,6 +127,12 @@ input[type="submit"]:hover {
     align-items: center;
     border-radius: 50%;
     margin: auto;
+    display: flex;
+}
+
+.timing{
+justify-content: center;
+align-items: center;
 }
 
 .background{
