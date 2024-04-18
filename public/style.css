@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: url('../img/backgroundSOS.png');
+  background: url('./img/backgroundSOS.png');
   background-size: cover;
   height: 100vh;
   width: 98vw;

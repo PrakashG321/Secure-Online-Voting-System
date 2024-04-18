@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/public/style.css">
+ 
 > git push -u origin online-voting-system
 remote: Repository not found.
 fatal: repository 'https://github.com/PrakashG321/Secure-Online-Voting-System.git/' not found

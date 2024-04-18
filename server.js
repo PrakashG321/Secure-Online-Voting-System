@@ -67,7 +67,7 @@ const db = new pg.Client({
 db.connect();
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/views/index.html");
+  res.sendFile(__dirname + "/index.html");
 });
 
 app.get("/admin-login", (req, res) => {
@@ -136,22 +136,22 @@ app.get("/admin/dashboard", async (req, res, next) => {
     const votes = voteResult.rows;
 
     const votesData_DeputyMayor = await db.query('SELECT * FROM deputy_mayor_votes');
-  const votes_DeputyMayor = votesData_DeputyMayor.rows;
+    const votes_DeputyMayor = votesData_DeputyMayor.rows;
 
-  const votesData_WardPresident = await db.query('SELECT * FROM ward_president');
-  const votes_WardPresident = votesData_WardPresident.rows;
+    const votesData_WardPresident = await db.query('SELECT * FROM ward_president');
+    const votes_WardPresident = votesData_WardPresident.rows;
 
-  const votesData_Female = await db.query('SELECT * FROM female_member');
-  const votes_Female = votesData_Female.rows;
+    const votesData_Female = await db.query('SELECT * FROM female_member');
+    const votes_Female = votesData_Female.rows;
 
-  const votesData_DalitFemale = await db.query('SELECT * FROM dalit_female_member');
-  const votes_DalitFemale = votesData_DalitFemale.rows;
+    const votesData_DalitFemale = await db.query('SELECT * FROM dalit_female_member');
+    const votes_DalitFemale = votesData_DalitFemale.rows;
 
-  const votesData_Member = await db.query('SELECT * FROM member');
-  const votes_Member = votesData_Member.rows;
+    const votesData_Member = await db.query('SELECT * FROM member');
+    const votes_Member = votesData_Member.rows;
 
 
-    res.render("admin.ejs", { votes, users, votes_DeputyMayor,votes_WardPresident,votes_Female,votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), getFileType });
+    res.render("admin.ejs", { votes, users, votes_DeputyMayor, votes_WardPresident, votes_Female, votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), getFileType });
   } catch (err) {
     console.error("Error fetching data:", err);
     res.status(500).send("Error fetching data");
@@ -220,12 +220,12 @@ app.post("/admin/delete-user", async (req, res, next) => {
   const votes_Member = votesData_Member.rows;
 
   try {
-    res.render('admin.ejs', { users, votes,votes_DeputyMayor,votes_WardPresident,votes_Female,votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), message: "User and associated votes deleted successfully", getFileType });
+    res.render('admin.ejs', { users, votes, votes_DeputyMayor, votes_WardPresident, votes_Female, votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), message: "User and associated votes deleted successfully", getFileType });
   } catch (err) {
     // Rollback the transaction in case of an error
     await db.query("ROLLBACK");
     console.error("Error deleting user:", err);
-    res.render('admin.ejs', { users, votes,votes_DeputyMayor,votes_WardPresident,votes_Female,votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), error: "Error deleting user", getFileType });
+    res.render('admin.ejs', { users, votes, votes_DeputyMayor, votes_WardPresident, votes_Female, votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), error: "Error deleting user", getFileType });
   }
 });
 
@@ -260,10 +260,10 @@ app.post("/admin/update-end-date", async (req, res, next) => {
 
   try {
     endDate = new Date(newEndDate);
-    res.render('admin.ejs', { users, votes,votes_DeputyMayor,votes_WardPresident,votes_Female,votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), message: "End date updated successfully", getFileType });
+    res.render('admin.ejs', { users, votes, votes_DeputyMayor, votes_WardPresident, votes_Female, votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), message: "End date updated successfully", getFileType });
   } catch (err) {
     console.error("Error updating end date:", err);
-    res.render('admin.ejs', { users, votes,votes_DeputyMayor,votes_WardPresident,votes_Female,votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), error: "Error updating end date", getFileType });
+    res.render('admin.ejs', { users, votes, votes_DeputyMayor, votes_WardPresident, votes_Female, votes_DalitFemale, votes_Member, endDate: endDate.toISOString(), error: "Error updating end date", getFileType });
   }
 });
 
