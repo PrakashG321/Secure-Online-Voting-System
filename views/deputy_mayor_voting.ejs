@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Page</title>
+    <link rel="stylesheet" href="/others.css">
+</head>
+
+<body>
+    <div class="information">
+        <p>View the list of candidates and their profiles below. <br>
+            Note: "Please be aware that the voting window is monitored. Kindly ensure to submit your vote before the
+            allotted time expires"</p>
+        <span id="currentDate"></span>
+
+    </div>
+
+    <div id="message">
+        <% if (typeof success !=='undefined' && success) { %>
+            <p class="succss_msg">
+                <%= success %>
+            </p>
+            <% } else if (typeof error !=='undefined' && error) { %>
+                <p class="error_msg">
+                    <%= error %>
+                </p>
+                <% } %>
+    </div>
+
+    <form class="background" action="/deputy-mayor-vote" method="post">
+        <h2 class="heading">Deputy Mayor</h2>
+        <input type="hidden" id="endDateInput" value="<%= locals.endDate %>">
+
+        <div class="candidate-form">
+            <div class="candidate c1">
+                <img class="images" src="/img/candidate_5.jpg" alt="Joe Biden">
+                <input class="selector" type="radio" id="candidate1" name="candidate" value="candidate1">
+                <label for="Joe Biden">Joe Maharjan</label>
+            </div>
+            <div class="candidate c2">
+                <img class="images" src="/img/candidate_6.jpg" alt="Elon musk">
+                <input class="selector" type="radio" id="candidate2" name="candidate" value="candidate2"><label
+                    for="Elon musk">Elon Gurung</label>
+            </div>
+            <div class="candidate c3">
+                <img class="images" src="/img/candidate_7.jpg" alt="Jeff Bezos">
+                <input class="selector" type="radio" id="candidate3" name="candidate" value="candidate3">
+                <label for="Jeff Bezos">Jeff Shrestha</label>
+            </div>
+            <div class="candidate c4">
+                <img class="images" src="/img/candidate_8.jpg" alt="Bil Gates">
+                <input class="selector" type="radio" id="candidate4" name="candidate" value="candidate4">
+                <label for="Bil Gates">Bil Tamang</label>
+            </div>
+
+            
+        </div>
+        </div>
+        <input type="submit" value="Vote">
+    </form>
+
+
+
+    </script>
+
+    <script src="/index.js"></script>
+</body>
+
+</html>

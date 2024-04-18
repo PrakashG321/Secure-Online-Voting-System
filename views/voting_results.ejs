@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voting Results</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #297cce; /* Dark blue background color */
+      color: #fff; /* Text color for better contrast */
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff; /* White container */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      color: #333; /* Reset text color for container */
+    }
+
+    h1 {
+      text-align: center;
+      color: #1b79d6; /* Darker blue for heading */
+      margin-top: 0;
+    }
+
+    h2 {
+      color: #1e6dbc; /* Slightly lighter blue for subheadings */
+      margin-top: 30px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      background-color: #ecf0f1; /* Light gray background for list items */
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    li:hover {
+      background-color: #bdc3c7; /* Darker gray on hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Voting Results</h1>
+    <h2>Mayor</h2>
+    <ul>
+      <% votes.forEach(function(result) { %>
+        <li><%= result.candidate %> - <%= result.votes %> votes</li>
+      <% }); %>
+    </ul>
+
+    <h2>Deputy Mayor</h2>
+    <ul>
+      <% votes_DeputyMayor.forEach(function(result) { %>
+        <li><%= result.candidate %> - <%= result.votes %> votes</li>
+      <% }); %>
+    </ul>
+
+    <h2>Ward President</h2>
+    <ul>
+      <% votes_WardPresident.forEach(function(result) { %>
+        <li><%= result.candidate %> - <%= result.votes %> votes</li>
+      <% }); %>
+    </ul>
+
+    <h2>Female Member</h2>
+    <ul>
+      <% votes_Female.forEach(function(result) { %>
+        <li><%= result.candidate %> - <%= result.votes %> votes</li>
+      <% }); %>
+    </ul>
+
+    <h2>Dalit Female Member</h2>
+    <ul>
+      <% votes_DalitFemale.forEach(function(result) { %>
+        <li><%= result.candidate %> - <%= result.votes %> votes</li>
+      <% }); %>
+    </ul>
+
+    <h2>Member</h2>
+    <ul>
+      <% votes_Member.forEach(function(result) { %>
+        <li><%= result.candidate %> - <%= result.votes %> votes</li>
+      <% }); %>
+    </ul>
+  </div>
+</body>
+</html>

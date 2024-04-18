@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+  <div class="admin-dashboard">
+    <a id="information"  href="/logout">Logout</a>
+    <h1>Admin Dashboard</h1>
+    
+
+    <!-- Display error message -->
+    <% if (typeof error !=='undefined' ) { %>
+      <div class="alert alert-danger">
+        <%= error %>
+      </div>
+      <% } %>
+
+        <!-- Display success message -->
+        <% if (typeof message !=='undefined' ) { %>
+          <div class="alert alert-success">
+            <%= message %>
+          </div>
+          <% } %>
+
+            <h2>Voters</h2>
+            <table>
+              <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone No.</th>
+                <th>Address</th>
+                <th>Citizenship No.</th>
+                <th>Citizenship Document</th>
+                <th>Action</th>
+              </tr>
+              <% users.forEach(user=> { %>
+                <tr>
+                  <td>
+                    <%= user.first_name + ' ' + user.last_name %>
+                  </td>
+                  <td>
+                    <%= user.email %>
+                  </td>
+                  <td>
+                    <%= user.phone_no %>
+                  </td>
+                  <td>
+                    <%= user.address %>
+                  </td>
+                  <td>
+                    <%= user.citizenship_no %>
+                  </td>
+                  <td>
+                    <% const fileType=getFileType(user.citizenship_document); %>
+                      <% if (fileType==='pdf' || fileType==='image' ) { %>
+                        <a href="/uploads/<%= user.citizenship_document %>" target="_blank">View Document</a>
+                        <% } else { %>
+                          <span>Unknown file type</span>
+                          <% } %>
+                  </td>
+                  <td>
+                    <form action="/admin/delete-user" method="POST" style="display: inline;">
+                      <input type="hidden" name="userId" value="<%= user.id %>">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+            </table>
+
+            <h2>Votes for mayor</h2>
+            <table>
+              <tr>
+                <th>Candidate</th>
+                <th>Voter_Id</th>
+              </tr>
+              <% votes.forEach(vote=> { %>
+                <tr>
+                  <td>
+                    <%= vote.candidate %>
+                  </td>
+                  <td>
+                    <%= vote.voter_id %>
+                  </td>
+                </tr>
+                <% }) %>
+            </table>
+
+            <h2>Votes for deputy mayor</h2>
+            <table>
+              <tr>
+                <th>Candidate</th>
+                <th>Voter_Id</th>
+              </tr>
+              <% votes_DeputyMayor.forEach(vote=> { %>
+                <tr>
+                  <td>
+                    <%= vote.candidate %>
+                  </td>
+                  <td>
+                    <%= vote.voter_id %>
+                  </td>
+                </tr>
+                <% }) %>
+            </table>
+            
+            <h2>Votes for ward-president</h2>
+            <table>
+              <tr>
+                <th>Candidate</th>
+                <th>Voter_Id</th>
+              </tr>
+              <% votes_WardPresident.forEach(vote=> { %>
+                <tr>
+                  <td>
+                    <%= vote.candidate %>
+                  </td>
+                  <td>
+                    <%= vote.voter_id %>
+                  </td>
+                </tr>
+                <% }) %>
+            </table>
+
+            <h2>Votes for female member</h2>
+            <table>
+              <tr>
+                <th>Candidate</th>
+                <th>Voter_Id</th>
+              </tr>
+              <% votes_Female.forEach(vote=> { %>
+                <tr>
+                  <td>
+                    <%= vote.candidate %>
+                  </td>
+                  <td>
+                    <%= vote.voter_id %>
+                  </td>
+                </tr>
+                <% }) %>
+            </table>
+
+            <h2>Votes for dalit female member</h2>
+            <table>
+              <tr>
+                <th>Candidate</th>
+                <th>Voter_Id</th>
+              </tr>
+              <% votes_DalitFemale.forEach(vote=> { %>
+                <tr>
+                  <td>
+                    <%= vote.candidate %>
+                  </td>
+                  <td>
+                    <%= vote.voter_id %>
+                  </td>
+                </tr>
+                <% }) %>
+            </table>
+
+            <h2>Votes for Member</h2>
+            <table>
+              <tr>
+                <th>Candidate</th>
+                <th>Voter_Id</th>
+              </tr>
+              <% votes_Member.forEach(vote=> { %>
+                <tr>
+                  <td>
+                    <%= vote.candidate %>
+                  </td>
+                  <td>
+                    <%= vote.voter_id %>
+                  </td>
+                </tr>
+                <% }) %>
+            </table>
+
+            
+
+            <h2>Update End Date</h2>
+            <form action="/admin/update-end-date" method="POST">
+              <label for="newEndDate">New End Date:</label>
+              <input type="datetime-local" id="newEndDate" name="newEndDate" value="<%= endDate %>">
+              <button type="submit">Update</button>
+            </form>
+  </div>
+</body>
+
+</html>

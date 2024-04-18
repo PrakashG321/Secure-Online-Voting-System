@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Page</title>
+    <link rel="stylesheet" href="/voting_page.css">
+</head>
+
+<body>
+    <div class="information">
+        <p>View the list of candidates and their profiles below. <br>
+            Note: "Please be aware that the voting window is monitored. Kindly ensure to submit your vote before the
+            allotted time expires"</p>
+        <span id="currentDate"></span>
+        <a id="information"  href="/logout">Logout</a>
+    </div>
+
+    <div id="message">
+        <% if (typeof success !=='undefined' && success) { %>
+            <p class="succss_msg">
+                <%= success %>
+            </p>
+            <% } else if (typeof error !=='undefined' && error) { %>
+                <p class="error_msg">
+                    <%= error %>
+                </p>
+                <% } %>
+    </div>
+
+    <form class="background" action="/vote" method="post">
+        <h2 class="heading">Mayor</h2>
+        <input type="hidden" id="endDateInput" value="<%= locals.endDate %>">
+
+        <div class="candidate-form">
+            <div class="candidate c1">
+                <img class="images" src="/img/candidate_1.jpg" alt="Balen Shah">
+                <input class="selector" type="radio" id="candidate1" name="candidate" value="candidate1">
+                <label for="Balen Shah">Balen Shah</label>
+            </div>
+            <div class="candidate c2">
+                <img class="images" src="/img/candidate_2.webp" alt="Harka Sampang">
+                <input class="selector" type="radio" id="candidate2" name="candidate" value="candidate2"><label
+                    for="Harka Sampang">Harka Sampang</label>
+            </div>
+            <div class="candidate c3">
+                <img class="images" src="/img/candidate_3.jpg" alt="Rajesh Man Singh">
+                <input class="selector" type="radio" id="candidate3" name="candidate" value="candidate3">
+                <label for="Rajesh Man Singh">Rajesh Man Singh</label>
+            </div>
+            <div class="candidate c4">
+                <img class="images" src="/img/candidate_4.jpg" alt="Dhana Raj Acharya">
+                <input class="selector" type="radio" id="candidate4" name="candidate" value="candidate4">
+                <label for="Dhana Raj Acharya">Dhana Raj Acharya</label>
+            </div>
+
+            <div class="timebox">
+                <div class="time_msg">Time Remaining:</div>
+                <div class="timer">
+                    <p class="timing">00:00:00</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <input type="submit" value="Vote">
+    </form>
+
+
+
+    </script>
+
+    <script src="/index.js"></script>
+</body>
+
+</html>

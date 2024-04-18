@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+<div class="container">
+  <div id="info_container" class="sub-container second_class">
+    <h1>Register</h1>
+    <% if (typeof error !== 'undefined') { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <!-- Makes POST request to /register-and-info route -->
+    <form action="/register-and-info" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" class="design email-input" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+       
+          <input type="password" class="design password-input" id="passwordInput" name="password" required>
+          <span id="toggle-password" onclick="togglePasswordVisibility('passwordInput')">
+            <i class="fas fa-eye"></i> <!-- Font Awesome eye icon -->
+          </span>
+       
+      </div>
+      <div class="form-group">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" class="design" name="first_name" required>
+      </div>
+      <div class="form-group">
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" class="design" name="last_name" required>
+      </div>
+      <div class="form-group">
+        <label for="citizenship_no">Citizenship no.:</label>
+        <input type="number" id="citizenship_no" class="design" name="citizenship_no" required>
+        <span id="citizenshipNoError" style="color: red;"></span>
+      </div>
+      <div class="form-group">
+        <label for="phone_no">Phone no.:</label>
+        <input type="tel" id="phone_no" class="design" name="phone_no" required maxlength="10">
+        <span id="phoneNoError" style="color: red;"></span>
+      </div>
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="text" id="address" class="design" name="address" required>
+      </div>
+      <div class="form-group">
+        <label for="citizenship_document">Citizenship Document:</label>
+        <input type="file" id="citizenship_document" class="design" name="citizenship_document" accept=".pdf,.png,.jpg,.jpeg" required>
+      </div>
+      <button type="submit" class="btn">Register</button>
+    </form>
+  </div>
+</div>
+<%- include('partials/footer') %>

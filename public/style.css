@@ -1,0 +1,337 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: url('../img/backgroundSOS.png');
+  background-size: cover;
+  height: 100vh;
+  width: 98vw;
+}
+
+.navigation_bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding: 0 20px;
+}
+
+.nav {
+  font-size: 20px;
+  text-decoration: none;
+  color: white;
+}
+
+.main {
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 6px 20px;
+  background-color: rgba(93, 163, 207, 0.2);
+  color: white;
+  text-decoration: none;
+  margin-right: 25px;
+}
+
+.left_items {
+  display: flex;
+}
+
+.left_items .nav {
+  margin-right: 60px;
+}
+
+.right_items {
+  display: flex;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('blue-background.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.sub-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  /* Less transparent white background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 225px;
+}
+
+.second_class{
+  width: auto !important;
+}
+
+.sub-container h1 {
+  text-align: center;
+  color: #333;
+  /* Dark text color */
+}
+
+/* .sub-container input[type="email"],
+.sub-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+} */
+
+.sub-container button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.sub-container button:hover {
+  background-color: #0056b3;
+}
+
+.alert{
+  color: red;
+  text-align: center;
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+
+.password-input-wrapper .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+#toggle-password{
+  margin-left: -30px;
+}
+
+.form-control {
+  width: 217px;
+  height: 37px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.hello {
+  height: 100px;
+  width: 100px;
+}
+
+.message {
+  color: white;
+  font-size: 18px;
+  margin-top: 240px;
+  margin-left: 47px;
+  width: 355px;
+}
+
+.learnmore {
+  display: block;
+  margin-top: 20px;
+  height: 29px;
+  width: 85px;
+  padding-top: 5px;
+  padding-left: 26px;
+  padding-right: 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  background-color: red;
+}
+
+/* Add this CSS to manage the layout */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.sub-container form {
+  width: 100%;
+}
+
+.sub-container .login-form label {
+  width: 102px;
+  /* Adjust the width as needed */
+  display: inline-block;
+  text-align: right;
+  margin-right: 10px;
+}
+
+
+.design {
+  background-color: #f1eeee;
+  border-radius: 10px;
+  height: 20px;
+  width: 220px;
+}
+
+/* Navigation Links */
+.left_items .nav {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.left_items .nav::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.left_items .nav:hover {
+  color: #d9d9d9;
+}
+
+.left_items .nav:hover::before {
+  background-color: #d9d9d9;
+}
+
+/* Main Buttons */
+.main {
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+}
+
+.main::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: width 0.3s ease, height 0.3s ease;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.main:hover {
+  background-color: rgba(93, 163, 207, 0.8);
+  color: #fff;
+}
+
+.main:hover::before {
+  width: 200%;
+  height: 200%;
+}
+
+/* Learn More Button */
+.learnmore {
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+}
+
+.learnmore::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: width 0.3s ease, height 0.3s ease;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.learnmore:hover {
+  background-color: #c70000;
+  color: #fff;
+}
+
+.learnmore:hover::before {
+  width: 200%;
+  height: 200%;
+}
+
+@media (max-width: 768px) {
+  .navigation_bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .left_items {
+    margin-bottom: 10px;
+  }
+
+  .left_items .nav {
+    margin-right: 20px;
+  }
+
+  .right_items {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    padding: 20px 0;
+  }
+
+  .sub-container {
+    width: 90%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .sub-container input[type="email"],
+  .sub-container input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .sub-container button {
+    width: 100%;
+  }
+
+  .form-control {
+    width: 100%;
+  }
+
+  .sub-container .login-form label {
+    width: auto;
+    display: block;
+    text-align: left;
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .message {
+    margin-top: 20px;
+    margin-left: 20px;
+    width: auto;
+  }
+
+  .learnmore {
+    margin-left: 20px;
+  }
+}
+
